@@ -3,6 +3,42 @@ function messageIsBot(div_msg) {
     return !div_msg.querySelector("img");
 }
 
+function getDate() {
+    // Получить текущую дату и время
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = ("0" + (now.getMonth() + 1)).slice(-2);
+    const day = ("0" + now.getDate()).slice(-2);
+    const hours = ("0" + now.getHours()).slice(-2);
+    const minutes = ("0" + now.getMinutes()).slice(-2);
+    const seconds = ("0" + now.getSeconds()).slice(-2);
+
+    const dateString = `y${year}_m${month}_d${day}_h${hours}_m${minutes}_s${seconds}`;
+
+    return dateString;
+}
+
+function saveTextToFile(text) {
+    // Скачать текст в файл
+    const filename = `"${getDate()}.txt`;
+
+    // Создаем новый Blob-объект с текстом, который хотим сохранить в файле
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+
+    // Создаем новый объект ссылки на URL-адрес файла
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.setAttribute("download", filename);
+    link.style.display = "none";
+
+    // Добавляем ссылку на документ и кликаем по ней, чтобы начать загрузку файла
+    document.body.appendChild(link);
+    link.click();
+
+    // Удаляем ссылку на файл из документа
+    document.body.removeChild(link);
+}
+
 function parseMessage(div_msg) {
     // Парсит сообщение и возвращает его в формате Markdown
     console.log(div_msg);
@@ -52,9 +88,10 @@ function parseMessage(div_msg) {
     });
     const res = tmp_arr.join("");
     console.log(res);
+    // Сохраняем результат в файл
+    saveTextToFile(res);
     return res;
 }
-
 
 function addButtonCopyMarkdown(div_msg) {
     /* Добавить кнопку для копирования текста в формате Markdown */
