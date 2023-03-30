@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "Мое расширение",
+    "description": "Описание моего расширения",
+    "version": "1.0",
+    "permissions": ["tabs", "activeTab", "scripting", "runtime"],
+    "action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://chat.openai.com/*"],
+            "js": ["jq.js", "content.js"],
+            "css": ["mystyle.css"],
+            "run_at": "document_end"
+        }
+    ]
+}
